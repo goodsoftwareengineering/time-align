@@ -3,32 +3,23 @@
             [kee-frame.core :as kf]
             [markdown.core :refer [md->html]]
             [reagent.core :as r]
+            [cljsjs.material-ui]
             [re-frame.core :as rf]))
 
-; the navbar components are implemented via baking-soda [1]
-; library that provides a ClojureScript interface for Reactstrap [2]
-; Bootstrap 4 components.
-; [1] https://github.com/gadfly361/baking-soda
-; [2] http://reactstrap.github.io/
 
-(defn nav-link [title page]
-  [b/NavItem
-   [b/NavLink
-    {:href   (kf/path-for [page])
-     :active (= page @(rf/subscribe [:nav/page]))}
-    title]])
+(def app-bar (r/adapt-react-class (aget js/MaterialUI "AppBar")))
+(def tool-bar (r/adapt-react-class (aget js/MaterialUI "Toolbar")))
+(def typography (r/adapt-react-class (aget js/MaterialUI "Typography")))
+(def paper (r/adapt-react-class (aget js/MaterialUI "Paper")))
+(def card (r/adapt-react-class (aget js/MaterialUI "Card")))
+(def button (r/adapt-react-class (aget js/MaterialUI "Button")))
 
 (defn navbar []
-  (r/with-let [expanded? (r/atom true)]
-              [b/Navbar {:light true
-                         :class-name "navbar-dark bg-primary"
-                         :expand "md"}
-               [b/NavbarBrand {:href "/"} "time-align"]
-               [b/NavbarToggler {:on-click #(swap! expanded? not)}]
-               [b/Collapse {:is-open @expanded? :navbar true}
-                [b/Nav {:class-name "mr-auto" :navbar true}
-                 [nav-link "Home" :home]
-                 [nav-link "About" :about]]]]))
+  [app-bar {:position "static"
+            :color "primary"}
+   [tool-bar [typography {:variant "h6"
+                          :color "secondary"}
+              "Time Align"]]])
 
 (defn about-page []
   [:div.container
@@ -46,8 +37,7 @@
 (defn buckets-page []
   [:div
    (when-let [buckets @(rf/subscribe [:buckets])]
-     [:div (str "number of buckets " (count buckets))])
-   ])
+     [:div (str "number of buckets: " (count buckets))])])
 
 (defn root-component []
   [:div
