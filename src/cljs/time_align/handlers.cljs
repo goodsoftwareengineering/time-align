@@ -2,27 +2,12 @@
   (:require
    [cljs.reader :refer [read-string]]
    [clojure.spec.alpha :as s]
-   [time-align.db :as db :refer [period-data-spec]]
-   [zprint.core :refer [zprint]]
+   [time-align.helpers :as helpers]
    [com.rpl.specter :as sp :refer-macros [select select-one setval transform]]))
-
-(defn print-data [data]
-  (with-out-str (zprint data 40)))
-
-(defn clean-period [period]
-  (select-keys period (keys period-data-spec)))
-
-(defn same-day? [date-a date-b]
-  (and (= (.getFullYear date-a)
-          (.getFullYear date-b))
-       (= (.getMonth date-a)
-          (.getMonth date-b))
-       (= (.getDate date-a)
-          (.getDate date-b))))
 
 (defn load-bucket-form [db [_ bucket-id]]
   (let [bucket      (select-one [:buckets sp/ALL #(= (:id %) bucket-id)] db)
-        bucket-form (merge bucket {:data (print-data (:data bucket))})]
+        bucket-form (merge bucket {:data (helpers/print-data (:data bucket))})]
     (assoc-in db [:forms :bucket-form] bucket-form)))
 
 (defn update-bucket-form [db [_ bucket-form]]
@@ -53,7 +38,7 @@
                              :bucket-color (:color sub-bucket)
                              :bucket-label (:label sub-bucket)}
         period-form         (merge period
-                                   {:data (print-data (:data period))}
+                                   {:data (helpers/print-data (:data period))}
                                    sub-bucket-remap)]
     (assoc-in db [:forms :period-form] period-form)))
 
@@ -119,7 +104,7 @@
                              :bucket-color (:color sub-bucket)
                              :bucket-label (:label sub-bucket)}
         template-form         (merge template
-                                   {:data (print-data (:data template))}
+                                   {:data (helpers/print-data (:data template))}
                                    sub-bucket-remap)]
     (assoc-in db [:forms :template-form] template-form)))
 
@@ -178,8 +163,8 @@
   (let [filter     (select-one
                     [:filters sp/ALL #(= (:id %) filter-id)] db)
         filter-form (merge filter
-                           {:predicates (print-data (:predicates filter))}
-                           {:sort (print-data (:sort filter))})]
+                           {:predicates (helpers/print-data (:predicates filter))}
+                           {:sort (helpers/print-data (:sort filter))})]
     (assoc-in db [:forms :filter-form] filter-form)))
 
 (defn update-filter-form [db [_ filter-form]]
@@ -274,7 +259,7 @@
                                :last-edited now
                                :start start
                                :stop  stop})
-        period-clean   (clean-period period)]
+        period-clean   (helpers/clean-period period)]
 
     {:db       (setval [:buckets sp/ALL
                         #(= (:id %) (:bucket-id template))
@@ -374,7 +359,7 @@
                   :periods
                   sp/NIL->VECTOR
                   sp/AFTER-ELEM]
-                 (clean-period period)))))
+                 (helpers/clean-period period)))))
 
 (defn select-next-or-prev-period [db [_ direction]]
   (if-let [selected-period-id (get-in db [:selected-period])]
@@ -386,8 +371,8 @@
                               ;; Next period needs to be on this displayed day
                               (filter #(and (some? (:start %))
                                             (some? (:stop %))
-                                            (or (same-day? (:start %) displayed-day)
-                                                (same-day? (:stop %) displayed-day))))
+                                            (or (helpers/same-day? (:start %) displayed-day)
+                                                (helpers/same-day? (:stop %) displayed-day))))
                               ;; Next period needs to be visible on this track
                               (filter #(= (:planned selected-period) (:planned %)))
                               (sort-by #(.valueOf (:start %)))
