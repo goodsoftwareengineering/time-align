@@ -43,10 +43,17 @@
       [:div {:dangerouslySetInnerHTML
              {:__html (md->html docs)}}]])])
 
+(defn buckets-page []
+  [:div
+   (when-let [buckets @(rf/subscribe [:buckets])]
+     [:div (str "number of buckets " (count buckets))])
+   ])
+
 (defn root-component []
   [:div
    [navbar]
    [kf/switch-route (fn [route] (get-in route [:data :name]))
-    :home home-page
-    :about about-page
+    :home    home-page
+    :about   about-page
+    :buckets buckets-page
     nil [:div ""]]])

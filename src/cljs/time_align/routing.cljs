@@ -3,8 +3,9 @@
     [re-frame.core :as rf]))
 
 (def routes
-  [["/" :home]
-   ["/about" :about]])
+  [["/"        :home]
+   ["/about"   :about]
+   ["/buckets" :buckets]])
 
 (rf/reg-sub
   :nav/route

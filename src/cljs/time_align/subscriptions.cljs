@@ -1,5 +1,5 @@
 (ns time-align.subscriptions
-  (:require [re-frame.core :refer [reg-sub]]
+  (:require [re-frame.core :as rf]
             [time-align.helpers :as helpers]
             [com.rpl.specter :as sp :refer-macros [select select-one setval transform]]))
 
@@ -199,3 +199,4 @@
                              :color        (:color bucket)})
       nil) ))
 
+(rf/reg-sub :buckets get-buckets)

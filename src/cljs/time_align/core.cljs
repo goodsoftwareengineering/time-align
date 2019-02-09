@@ -4,7 +4,9 @@
             [ajax.core :as http]
             [time-align.ajax :as ajax]
             [time-align.routing :as routing]
-            [time-align.view :as view]))
+            [time-align.view :as view]
+            [time-align.subscriptions]
+            [time-align.db :as db]))
 
 
 (rf/reg-event-fx
@@ -31,7 +33,6 @@
   (fn [{:keys [db]} [_ docs]]
     {:db (assoc db :docs docs)}))
 
-
 (kf/reg-controller
   ::home-controller
   {:params (constantly true)
@@ -44,7 +45,7 @@
   (kf/start! {:debug?         true
               :routes         routing/routes
               :hash-routing?  true
-              :initial-db     {}
+              :initial-db     db/app-db
               :root-component [view/root-component]}))
 
 (defn init! []
