@@ -5,6 +5,7 @@
 
   :dependencies [[baking-soda "0.2.0" :exclusions [cljsjs/react-bootstrap]]
                  [binaryage/oops "0.6.4"]
+                 [camel-snake-kebab "0.4.0"]
                  [ch.qos.logback/logback-classic "1.2.3"]
                  [cheshire "5.8.1"]
                  [clj-oauth "1.5.5"]
