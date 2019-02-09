@@ -12,3 +12,9 @@ profiles.clj
 /.env
 .nrepl-port
 /log
+
+node_modules/
+
+package-lock\.json
+
+out/
