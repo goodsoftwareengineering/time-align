@@ -4,13 +4,11 @@
             [markdown.core :refer [md->html]]
             [reagent.core :as r]
             [time-align.mui :as mui]
+            [time-align.pages.buckets.page :as buckets-page]
+            [time-align.components.misc :refer [fa-icon]]
             [re-frame.core :as rf]))
 
 (def mobile-drawer (r/atom false))
-
-(defn fa-icon [class style]
-  [:i {:class ["fas" class]
-       :style style}])
 
 (defn navbar []
   [mui/app-bar {:position "static"
@@ -46,22 +44,17 @@
          pixels  @(rf/subscribe [:get-width-pixels])]
      [mui/typography (str t-shirt " : " pixels)])])
 
-(defn buckets-page []
-  [mui/paper
-   (when-let [buckets @(rf/subscribe [:buckets])]
-     [mui/typography (str "number of buckets: " (count buckets))])])
-
 (defn root-component []
   [mui/mui-theme-provider {:theme mui/theme}
    [mui/css-baseline] ;; this sets the body background
-   [mui/swipeable-drawer {:open     @mobile-drawer
-                      :on-close #(reset! mobile-drawer false)
-                      :on-open  #(reset! mobile-drawer true)}
+   [mui/swipeable-drawer {:open @mobile-drawer
+                          :on-close #(reset! mobile-drawer false)
+                          :on-open  #(reset! mobile-drawer true)}
     [drawer-content]]
    [navbar]
    [kf/switch-route (fn [route] (get-in route [:data :name]))
     :home    home-page
     :about   about-page
-    :buckets buckets-page
+    :buckets buckets-page/root
     nil [:div ""]]])
 
