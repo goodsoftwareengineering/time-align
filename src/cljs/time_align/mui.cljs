@@ -27,5 +27,10 @@
 (def hidden (r/adapt-react-class (aget js/MaterialUI "Hidden")))
 (def menu-icon (r/adapt-react-class (aget js/MaterialUI "Menu")))
 (def link (r/adapt-react-class (aget js/MaterialUI "Link")))
-
+(def list-element (r/adapt-react-class (aget js/MaterialUI "List")))
+(def list-item (r/adapt-react-class (aget js/MaterialUI "ListItem")))
+(def list-item-text (r/adapt-react-class (aget js/MaterialUI "ListItemText")))
+(def list-item-avatar (r/adapt-react-class (aget js/MaterialUI "ListItemAvatar")))
+(def avatar (r/adapt-react-class (aget js/MaterialUI "Avatar")))
+(def grid (r/adapt-react-class (aget js/MaterialUI "Grid")))
 

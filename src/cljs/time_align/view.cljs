@@ -27,7 +27,11 @@
                            (aget "white"))}
       "fas" "fa-bars"]]
     [mui/typography {:variant "h4"
-                 :style {:margin-left "1em"}}
+                     :style {:margin-left "1em"
+                             :color  (-> mui/theme
+                                         (aget "palette")
+                                         (aget "common")
+                                         (aget "white"))}}
      "Time Align"]]])
 
 (defn drawer-content []
