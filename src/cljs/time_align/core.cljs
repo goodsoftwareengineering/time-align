@@ -6,6 +6,7 @@
             [time-align.routing :as routing]
             [time-align.view :as view]
             [time-align.subscriptions]
+            [time-align.handlers]
             [time-align.db :as db]))
 
 
@@ -40,6 +41,13 @@
 
 ;; -------------------------
 ;; Initialize app
+(defn get-width []
+  (-> js/document (aget "documentElement") (aget "clientWidth")))
+
+(.addEventListener js/window "resize"
+                   #(rf/dispatch [:set-width (get-width)]))
+(rf/dispatch [:set-width (get-width)])
+
 (defn mount-components []
   (rf/clear-subscription-cache!)
   (kf/start! {:debug?         true

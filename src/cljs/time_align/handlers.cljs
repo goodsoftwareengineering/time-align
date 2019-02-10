@@ -1,6 +1,7 @@
 (ns time-align.handlers
   (:require
    [cljs.reader :refer [read-string]]
+   [re-frame.core :as rf]
    [clojure.spec.alpha :as s]
    [time-align.helpers :as helpers]
    [com.rpl.specter :as sp :refer-macros [select select-one setval transform]]))
@@ -488,3 +489,11 @@
          ;; Set it as selected
          (setval [:selected-period] id))))
 
+(defn set-width [db [_ size]]
+  (merge db {:width {:t-shirt (cond
+                                (< size 1000) :sm
+                                (< size 1920) :md
+                                :else         :lg)
+                     :pixels  size}}))
+
+(rf/reg-event-db :set-width set-width)

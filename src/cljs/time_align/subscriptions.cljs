@@ -199,4 +199,12 @@
                              :color        (:color bucket)})
       nil) ))
 
+(defn get-width-t-shirt [db _]
+  (get-in db [:width :t-shirt]))
+
+(defn get-width-pixels [db _]
+  (get-in db [:width :pixels]))
+
 (rf/reg-sub :buckets get-buckets)
+(rf/reg-sub :get-width-t-shirt get-width-t-shirt)
+(rf/reg-sub :get-width-pixels get-width-pixels)

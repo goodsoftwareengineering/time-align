@@ -32,7 +32,7 @@
   [app-bar {:position "static"
             :color "primary"}
    [tool-bar [typography {:variant "h4"
-                          :color white}
+                          :color "accent"}
               "Time Align"]]])
 
 (defn about-page []
@@ -42,16 +42,15 @@
      [:img {:src "/img/warning_clojure.png"}]]]])
 
 (defn home-page []
-  [:div.container
-   (when-let [docs @(rf/subscribe [:docs])]
-     [:div.row>div.col-sm-12
-      [:div {:dangerouslySetInnerHTML
-             {:__html (md->html docs)}}]])])
+  [paper
+   (let [t-shirt @(rf/subscribe [:get-width-t-shirt])
+         pixels  @(rf/subscribe [:get-width-pixels])]
+     [typography (str t-shirt " : " pixels)])])
 
 (defn buckets-page []
   [paper
    (when-let [buckets @(rf/subscribe [:buckets])]
-     [typography {:color "accent"} (str "number of buckets: " (count buckets))])])
+     [typography (str "number of buckets: " (count buckets))])])
 
 (defn root-component []
   [mui-theme-provider {:theme theme}
@@ -63,3 +62,4 @@
      :about   about-page
      :buckets buckets-page
      nil [:div ""]]]])
+
