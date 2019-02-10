@@ -1,5 +1,5 @@
 (ns time-align.components.misc)
 
-(defn fa-icon [class style]
-  [:i {:class ["fas" class]
+(defn fa-icon [style & classes ]
+  [:i {:class classes
        :style style}])

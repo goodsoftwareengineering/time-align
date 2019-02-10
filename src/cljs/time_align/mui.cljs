@@ -26,6 +26,6 @@
 (def swipeable-drawer (r/adapt-react-class (aget js/MaterialUI "SwipeableDrawer")))
 (def hidden (r/adapt-react-class (aget js/MaterialUI "Hidden")))
 (def menu-icon (r/adapt-react-class (aget js/MaterialUI "Menu")))
-
+(def link (r/adapt-react-class (aget js/MaterialUI "Link")))
 
 

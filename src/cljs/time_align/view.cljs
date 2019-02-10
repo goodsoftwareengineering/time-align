@@ -20,17 +20,35 @@
                                            (aget "primary")
                                            (aget "dark"))}
              :variant  "contained"}
-     [fa-icon "fa-bars" {:font-size    "2em"
-                         :color  (-> mui/theme
-                                     (aget "palette")
-                                     (aget "common")
-                                     (aget "white"))}]]
+     [fa-icon {:font-size    "2em"
+               :color  (-> mui/theme
+                           (aget "palette")
+                           (aget "common")
+                           (aget "white"))}
+      "fas" "fa-bars"]]
     [mui/typography {:variant "h4"
                  :style {:margin-left "1em"}}
      "Time Align"]]])
 
 (defn drawer-content []
-  [mui/typography "I'm the drawer :)"])
+  (let [container-style {:display        "flex"
+                         :flex-direction "row"
+                         :align-items    "center"
+                         :margin         "1em"}
+        icon-style      {:margin           "0.25em"
+                         :font-size        "2em"
+                         :background-color (-> mui/theme
+                                               (aget "palette")
+                                               (aget "primary"))
+                         :color            (-> mui/theme
+                                               (aget "palette")
+                                               (aget "common")
+                                               (aget "white"))}]
+
+    [mui/link {:href (kf/path-for [:buckets])}
+     [:div {:style container-style}
+      [fa-icon icon-style "fab" "fa-bitbucket"]
+      [mui/typography "yo"]]]))
 
 (defn about-page []
   [:div.container
