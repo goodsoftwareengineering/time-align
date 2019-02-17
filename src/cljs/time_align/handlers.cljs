@@ -497,3 +497,4 @@
                      :pixels  size}}))
 
 (rf/reg-event-db :set-width set-width)
+(rf/reg-event-db :load-bucket-form load-bucket-form)

@@ -3,10 +3,11 @@
     [re-frame.core :as rf]))
 
 (def routes
-  [["/"           :home]
-   ["/about"      :about]
-   ["/buckets"    :buckets]
-   ["/add/bucket" :bucket]])
+  [["/"                :home]
+   ["/about"           :about]
+   ["/buckets"         :bucket-list]
+   ["/add/bucket"      :bucket-new]
+   ["/edit/bucket/:id" :bucket-edit]])
 
 (rf/reg-sub
   :nav/route

@@ -2,6 +2,7 @@
   (:require [time-align.mui :as mui]
             [time-align.components.misc :refer [fa-icon]]
             [re-frame.core :as rf]
+            [kee-frame.core :as kf]
             [oops.core :refer [oget oset! ocall oapply ocall! oapply!
                                oget+ oset!+ ocall+ oapply+ ocall!+ oapply!+]]
             [reagent.core :as r]))
@@ -22,8 +23,7 @@
                                            (:last-edited bucket)))])}]
    [mui/list-item-secondary-action
     [mui/icon-button
-     {:on-click #(js/alert (str "edit this bucket "
-                                (:label bucket)))}
+     {:href (kf/path-for [:bucket-edit {:id (:id bucket)}])}
      [fa-icon {} "fas" "fa-edit"]]]])
 
 (defn root []

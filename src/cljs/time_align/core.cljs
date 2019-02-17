@@ -39,6 +39,18 @@
   {:params (constantly true)
    :start  [::load-home-page]})
 
+(kf/reg-controller
+ ::bucket-edit-controller
+ {:params (fn [route-data]
+            (when (-> route-data :data :name (= :bucket-edit))
+              (-> route-data
+                  :path-params
+                  :id
+                  uuid)))
+
+  :start (fn [ctx id]
+           [:load-bucket-form id])})
+
 ;; -------------------------
 ;; Initialize app
 (defn get-width []

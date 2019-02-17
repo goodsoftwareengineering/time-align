@@ -208,3 +208,4 @@
 (rf/reg-sub :buckets get-buckets)
 (rf/reg-sub :get-width-t-shirt get-width-t-shirt)
 (rf/reg-sub :get-width-pixels get-width-pixels)
+(rf/reg-sub :bucket-form get-bucket-form)

@@ -5,6 +5,7 @@
             [reagent.core :as r]
             [time-align.mui :as mui]
             [time-align.pages.buckets.list :as buckets-list]
+            [time-align.pages.buckets.edit :as buckets-edit]
             [time-align.components.misc :refer [fa-icon]]
             [re-frame.core :as rf]))
 
@@ -49,7 +50,7 @@
                                                (aget "common")
                                                (aget "white"))}]
 
-    [mui/link {:href (kf/path-for [:buckets])}
+    [mui/link {:href (kf/path-for [:bucket-list])}
      [:div {:style container-style}
       [fa-icon icon-style "fab" "fa-bitbucket"]
       [mui/typography "buckets"]]]))
@@ -77,6 +78,8 @@
    [kf/switch-route (fn [route] (get-in route [:data :name]))
     :home    home-page
     :about   about-page
-    :buckets buckets-list/root
+    :bucket-list buckets-list/root
+    :bucket-new  buckets-edit/root
+    :bucket-edit buckets-edit/root
     nil [:div ""]]])
 
