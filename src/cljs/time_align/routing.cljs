@@ -3,9 +3,10 @@
     [re-frame.core :as rf]))
 
 (def routes
-  [["/"        :home]
-   ["/about"   :about]
-   ["/buckets" :buckets]])
+  [["/"           :home]
+   ["/about"      :about]
+   ["/buckets"    :buckets]
+   ["/add/bucket" :bucket]])
 
 (rf/reg-sub
   :nav/route
@@ -16,7 +17,6 @@
   :nav/route-name
   (fn [_ [_ route-name]]
     {:navigate-to [route-name]}))
-
 
 (rf/reg-sub
   :nav/page

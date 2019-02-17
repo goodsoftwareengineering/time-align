@@ -4,7 +4,7 @@
             [markdown.core :refer [md->html]]
             [reagent.core :as r]
             [time-align.mui :as mui]
-            [time-align.pages.buckets.page :as buckets-page]
+            [time-align.pages.buckets.list :as buckets-list]
             [time-align.components.misc :refer [fa-icon]]
             [re-frame.core :as rf]))
 
@@ -52,7 +52,7 @@
     [mui/link {:href (kf/path-for [:buckets])}
      [:div {:style container-style}
       [fa-icon icon-style "fab" "fa-bitbucket"]
-      [mui/typography "yo"]]]))
+      [mui/typography "buckets"]]]))
 
 (defn about-page []
   [:div.container
@@ -77,6 +77,6 @@
    [kf/switch-route (fn [route] (get-in route [:data :name]))
     :home    home-page
     :about   about-page
-    :buckets buckets-page/root
+    :buckets buckets-list/root
     nil [:div ""]]])
 

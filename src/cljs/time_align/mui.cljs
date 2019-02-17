@@ -11,6 +11,7 @@
 (def paper (r/adapt-react-class (aget js/MaterialUI "Paper")))
 (def card (r/adapt-react-class (aget js/MaterialUI "Card")))
 (def button (r/adapt-react-class (aget js/MaterialUI "Button")))
+(def icon-button (r/adapt-react-class (aget js/MaterialUI "IconButton")))
 (def mui-theme-provider (r/adapt-react-class (aget js/MaterialUI "MuiThemeProvider")))
 (def create-mui-theme (aget js/MaterialUI "createMuiTheme"))
 (def purple (-> js/MaterialUI (aget "colors") (aget "purple")))
@@ -31,6 +32,7 @@
 (def list-item (r/adapt-react-class (aget js/MaterialUI "ListItem")))
 (def list-item-text (r/adapt-react-class (aget js/MaterialUI "ListItemText")))
 (def list-item-avatar (r/adapt-react-class (aget js/MaterialUI "ListItemAvatar")))
+(def list-item-secondary-action (r/adapt-react-class (aget js/MaterialUI "ListItemSecondaryAction")))
 (def avatar (r/adapt-react-class (aget js/MaterialUI "Avatar")))
 (def grid (r/adapt-react-class (aget js/MaterialUI "Grid")))
 
