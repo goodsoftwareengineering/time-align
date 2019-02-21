@@ -35,4 +35,10 @@
 (def list-item-secondary-action (r/adapt-react-class (aget js/MaterialUI "ListItemSecondaryAction")))
 (def avatar (r/adapt-react-class (aget js/MaterialUI "Avatar")))
 (def grid (r/adapt-react-class (aget js/MaterialUI "Grid")))
-
+(def text-field (r/adapt-react-class (aget js/MaterialUI "TextField")))
+(def mui-colors (aget js/MaterialUI "colors"))
+(def standard-colors (->> mui-colors
+                          (js->clj)
+                          (map (fn [[color-name variants]]
+                                 {:name color-name
+                                  :hex  (get variants "500")}))))
