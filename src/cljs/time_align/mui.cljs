@@ -42,3 +42,6 @@
                           (map (fn [[color-name variants]]
                                  {:name color-name
                                   :hex  (get variants "500")}))))
+(def select (r/adapt-react-class (aget js/MaterialUI "Select")))
+(def menu-item (r/adapt-react-class (aget js/MaterialUI "MenuItem")))
+(def dialog (r/adapt-react-class (aget js/MaterialUI "Dialog")))

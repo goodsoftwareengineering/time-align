@@ -1,8 +1,12 @@
 (ns time-align.pages.buckets.edit
   (:require [re-frame.core :as rf]
+            [reagent.core :as r]
             [time-align.mui :as mui]
-            [time-align.components.color :refer [color-picker]]))
+            [time-align.components.misc :refer [fa-icon]]
+            [time-align.components.color :refer [color-picker-dialog]]))
 
+;; TODO should this be in the url and app-db?
+(def color-dialog-open (r/atom false))
 
 (defn root []
   [mui/grid {:container   true
@@ -12,15 +16,29 @@
              :spacing     16
              :style       {:flex-grow "1"}}
 
+   [color-picker-dialog {:open        @color-dialog-open
+                         :on-close-fn #(reset! color-dialog-open false)
+                         :on-select-fn #(rf/dispatch
+                                         [:update-bucket-form {:color %}])}]
+
    [mui/grid {:item true
               :xs   12}
     [mui/paper {:style {:padding "1em"
                         :width   "100%"}}
      (when-let [bucket-form @(rf/subscribe [:bucket-form])]
-       [mui/grid {:container   true
-                  :justify     "left"
-                  :align-items "center"
-                  :direction   "column"}
+       [mui/grid {:container true
+                  :justify   "flex-start"
+                  :direction "column"}
+
+        [mui/card {:style {:width            "18em"
+                           :height           "4em"
+                           :background-color (:color bucket-form)}}
+         [mui/grid {:container true :justify "flex-end"}
+          [mui/grid {:item true}
+           [mui/icon-button
+            {:on-click #(swap! color-dialog-open (fn [old] (not old)))}
+            [fa-icon {:font-size "1.5em"} "fas" "fa-paint-brush"]]]]]
+
         [mui/text-field {:id     "bucket-id"
                          :label  "ID"
                          :value  (:id bucket-form)
@@ -29,9 +47,7 @@
                          :label  "Label"
                          :value  (:label bucket-form)
                          :margin "normal" }]
-        [color-picker]]
-
-       )]]])
+        ])]]])
 
 ;; {:id          uuid?
 ;;  :label       string?
