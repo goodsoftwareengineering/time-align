@@ -16,8 +16,8 @@
              :spacing     16
              :style       {:flex-grow "1"}}
 
-   [color-picker-dialog {:open        @color-dialog-open
-                         :on-close-fn #(reset! color-dialog-open false)
+   [color-picker-dialog {:open         @color-dialog-open
+                         :on-close-fn  #(reset! color-dialog-open false)
                          :on-select-fn #(rf/dispatch
                                          [:update-bucket-form {:color %}])}]
 
@@ -42,12 +42,13 @@
         [mui/text-field {:id     "bucket-id"
                          :label  "ID"
                          :value  (:id bucket-form)
-                         :margin "normal" }]
+                         :margin "normal"}]
         [mui/text-field {:id     "bucket-label"
                          :label  "Label"
                          :value  (:label bucket-form)
-                         :margin "normal" }]
-        ])]]])
+                         :margin
+
+                         "normal"}]])]]])
 
 ;; {:id          uuid?
 ;;  :label       string?
