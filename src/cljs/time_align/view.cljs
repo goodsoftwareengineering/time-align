@@ -3,32 +3,57 @@
             [kee-frame.core :as kf]
             [markdown.core :refer [md->html]]
             [reagent.core :as r]
+            [time-align.mui :as mui]
+            [time-align.pages.buckets.list :as buckets-list]
+            [time-align.pages.buckets.edit :as buckets-edit]
+            [time-align.components.misc :refer [fa-icon]]
             [re-frame.core :as rf]))
 
-; the navbar components are implemented via baking-soda [1]
-; library that provides a ClojureScript interface for Reactstrap [2]
-; Bootstrap 4 components.
-; [1] https://github.com/gadfly361/baking-soda
-; [2] http://reactstrap.github.io/
-
-(defn nav-link [title page]
-  [b/NavItem
-   [b/NavLink
-    {:href   (kf/path-for [page])
-     :active (= page @(rf/subscribe [:nav/page]))}
-    title]])
+(def mobile-drawer (r/atom false))
 
 (defn navbar []
-  (r/with-let [expanded? (r/atom true)]
-              [b/Navbar {:light true
-                         :class-name "navbar-dark bg-primary"
-                         :expand "md"}
-               [b/NavbarBrand {:href "/"} "time-align"]
-               [b/NavbarToggler {:on-click #(swap! expanded? not)}]
-               [b/Collapse {:is-open @expanded? :navbar true}
-                [b/Nav {:class-name "mr-auto" :navbar true}
-                 [nav-link "Home" :home]
-                 [nav-link "About" :about]]]]))
+  [mui/app-bar {:position "static"
+            :color    "primary"}
+   [mui/tool-bar
+    [mui/button {:on-click #(swap! mobile-drawer not)
+                 :style {:background-color (-> mui/theme
+                                           (aget "palette")
+                                           (aget "primary")
+                                           (aget "dark"))}
+             :variant  "contained"}
+     [fa-icon {:font-size    "2em"
+               :color  (-> mui/theme
+                           (aget "palette")
+                           (aget "common")
+                           (aget "white"))}
+      "fas" "fa-bars"]]
+    [mui/typography {:variant "h4"
+                     :style {:margin-left "1em"
+                             :color  (-> mui/theme
+                                         (aget "palette")
+                                         (aget "common")
+                                         (aget "white"))}}
+     "Time Align"]]])
+
+(defn drawer-content []
+  (let [container-style {:display        "flex"
+                         :flex-direction "row"
+                         :align-items    "center"
+                         :margin         "1em"}
+        icon-style      {:margin           "0.25em"
+                         :font-size        "2em"
+                         :background-color (-> mui/theme
+                                               (aget "palette")
+                                               (aget "primary"))
+                         :color            (-> mui/theme
+                                               (aget "palette")
+                                               (aget "common")
+                                               (aget "white"))}]
+
+    [mui/link {:href (kf/path-for [:bucket-list])}
+     [:div {:style container-style}
+      [fa-icon icon-style "fab" "fa-bitbucket"]
+      [mui/typography "buckets"]]]))
 
 (defn about-page []
   [:div.container
@@ -37,16 +62,24 @@
      [:img {:src "/img/warning_clojure.png"}]]]])
 
 (defn home-page []
-  [:div.container
-   (when-let [docs @(rf/subscribe [:docs])]
-     [:div.row>div.col-sm-12
-      [:div {:dangerouslySetInnerHTML
-             {:__html (md->html docs)}}]])])
+  [mui/paper
+   (let [t-shirt @(rf/subscribe [:get-width-t-shirt])
+         pixels  @(rf/subscribe [:get-width-pixels])]
+     [mui/typography (str t-shirt " : " pixels)])])
 
 (defn root-component []
-  [:div
+  [mui/mui-theme-provider {:theme mui/theme}
+   [mui/css-baseline] ;; this sets the body background
+   [mui/swipeable-drawer {:open @mobile-drawer
+                          :on-close #(reset! mobile-drawer false)
+                          :on-open  #(reset! mobile-drawer true)}
+    [drawer-content]]
    [navbar]
    [kf/switch-route (fn [route] (get-in route [:data :name]))
-    :home home-page
-    :about about-page
+    :home    home-page
+    :about   about-page
+    :bucket-list buckets-list/root
+    :bucket-new  buckets-edit/root
+    :bucket-edit buckets-edit/root
     nil [:div ""]]])
+
